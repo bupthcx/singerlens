@@ -1,0 +1,15 @@
+protocol,model,heldout_domain,in_dist_eer,out_dist_eer,degradation_ratio
+LOVO,AASIST,hifigan,5.1,4.76,0.93
+LOVO,AASIST,nsf-hifigan,7.33,21.92,2.99
+LOVO,AASIST,ddsp,4.0,5.67,1.42
+LOVO,RF_FULL,hifigan,13.67,31.76,2.32
+LOVO,RF_FULL,nsf-hifigan,20.92,36.33,1.74
+LOVO,RF_FULL,ddsp,26.04,28.67,1.1
+LOGO,AASIST,SVS,5.48,16.18,2.95
+LOGO,AASIST,SVC,8.0,19.43,2.43
+LOGO,RF_FULL,SVS,17.0,34.59,2.03
+LOGO,RF_FULL,SVC,20.78,39.24,1.89
+cross-dataset,AASIST,SingerLens(A->B),6.5,42.58,6.55
+cross-dataset,AASIST,CtrSVDD(B->A),5.16,45.25,8.77
+cross-dataset,RF_FULL,SingerLens(A->B),18.88,42.03,2.23
+cross-dataset,RF_FULL,CtrSVDD(B->A),0.0,46.96,

@@ -1,0 +1,5 @@
+perturbation,n,mean_p_fake,median_p_fake,flip_rate_to_fake,delta_vs_original
+original,200,0.085,0.077,0.0,0.0
+accomp_leak_-6db,188,0.085,0.073,0.0,0.0
+accomp_leak_0db,188,0.079,0.07,0.0,-0.006
+demucs_resep,200,0.226,0.212,0.02,0.141

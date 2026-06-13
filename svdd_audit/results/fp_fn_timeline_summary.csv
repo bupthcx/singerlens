@@ -1,0 +1,13 @@
+setup,kind,file,true_group,clip_pred,win_mean,win_min,win_max
+real_vs_fake,FP,singer_c_tiankong_017.wav,real,0.877,0.606,0.52,0.72
+real_vs_fake,FP,singer_a_kaishidongle_027.wav,real,0.84,0.487,0.383,0.55
+real_vs_fake,FN,singer_c_juhao_029_fake.wav,fake,0.117,0.214,0.1,0.46
+real_vs_fake,FN,singer_b_kaishidongle_021_fake.wav,fake,0.143,0.373,0.25,0.623
+real_vs_realvoc,FP,singer_a_tiankong2_021.wav,real,0.827,0.41,0.283,0.573
+real_vs_realvoc,FP,singer_b_woyaodexingfu_021.wav,real,0.773,0.436,0.34,0.567
+real_vs_realvoc,FN,singer_b_kaishidongle_003_voc.wav,real_vocoded,0.143,0.373,0.193,0.66
+real_vs_realvoc,FN,singer_b_tianheihei_006_voc.wav,real_vocoded,0.17,0.363,0.217,0.587
+realvoc_vs_fake,FP,singer_a_kaishidongle_018_voc.wav,real_vocoded,0.853,0.563,0.453,0.683
+realvoc_vs_fake,FP,singer_c_tiankong_016_voc.wav,real_vocoded,0.823,0.455,0.317,0.607
+realvoc_vs_fake,FN,singer_c_juhao_017_fake.wav,fake,0.083,0.256,0.173,0.447
+realvoc_vs_fake,FN,singer_c_juhao_029_fake.wav,fake,0.093,0.214,0.1,0.46

@@ -1,0 +1,5 @@
+protocol,AASIST_EER,AASIST_AUC,RF_FULL_EER,RF_FULL_AUC
+A->A(within CtrSVDD),6.5,0.987,18.88,0.899
+B->B(within SingerLens),5.16,0.987,0.0,1.0
+"A->B(train Ctr,test SL)",42.58,0.596,42.03,0.615
+"B->A(train SL,test Ctr)",45.25,0.553,46.96,0.541

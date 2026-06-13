@@ -1,0 +1,16 @@
+subset,model,protocol,EER,AUC,F1,n_clips,n_songs,source
+WildSVDD-bili-all,RF_FULL,Wild-domain CV,14.81,0.935,0.859,466,164.0,computed
+WildSVDD-bili-all,RF_FULL,CtrSVDD->Wild,48.93,0.52,0.586,466,164.0,computed
+WildSVDD-bili-all,RF_FULL,SingerLens->Wild,53.65,0.461,0.0,466,164.0,computed
+WildSVDD-bili-T02,RF_FULL,Wild-domain CV,14.22,0.923,0.797,387,135.0,computed
+WildSVDD-bili-T02,RF_FULL,CtrSVDD->Wild,47.28,0.534,0.526,387,135.0,computed
+WildSVDD-bili-T02,RF_FULL,SingerLens->Wild,50.91,0.499,0.0,387,135.0,computed
+WildSVDD-bili-all,AASIST,CtrSVDD->Wild,32.12,0.748,0.194,165,,/home/admin2/xf/ctrsvdd/aasist_out/wild_CtrToWild.csv
+WildSVDD-bili-all,AASIST,SingerLens->Wild,54.54,0.43,0.176,165,,/home/admin2/xf/ctrsvdd/aasist_out/wild_SLToWild.csv
+WildSVDD-bili-T02,AASIST,CtrSVDD->Wild,32.32,0.698,0.1,136,,/home/admin2/xf/ctrsvdd/aasist_out/wild_t02_CtrToT02.csv
+WildSVDD-bili-all,WavLM_RF,Wild-domain CV,50.31,0.581,0.526,165,165.0,computed
+WildSVDD-bili-all,WavLM_RF,CtrSVDD->Wild,50.9,0.499,0.562,165,165.0,computed
+WildSVDD-bili-all,WavLM_RF,SingerLens->Wild,49.1,0.569,0.509,165,165.0,computed
+WildSVDD-bili-T02,WavLM_RF,Wild-domain CV,46.34,0.587,0.368,136,136.0,computed
+WildSVDD-bili-T02,WavLM_RF,CtrSVDD->Wild,52.14,0.455,0.454,136,136.0,computed
+WildSVDD-bili-T02,WavLM_RF,SingerLens->Wild,48.48,0.583,0.472,136,136.0,computed

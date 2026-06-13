@@ -1,0 +1,7 @@
+model,heldout_vocoder,in_dist_eer,lovo_eer,degradation_ratio
+AASIST,hifigan,5.1,4.76,0.93
+RF_FULL,hifigan,13.67,31.76,2.32
+AASIST,nsf-hifigan,7.33,21.92,2.99
+RF_FULL,nsf-hifigan,20.92,36.33,1.74
+AASIST,ddsp,4.0,5.67,1.42
+RF_FULL,ddsp,26.04,28.67,1.1

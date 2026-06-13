@@ -1,0 +1,11 @@
+group,n_features,cv_accuracy,cv_f1,cv_auc
+lowlevel,6,0.9839,0.9841,1.0
+mfcc,26,1.0,1.0,1.0
+pitch,6,1.0,1.0,1.0
+pitch_dynamics,3,0.9194,0.9206,0.9886
+vri,7,0.7742,0.7742,0.8231
+voice_quality,3,0.871,0.871,0.9365
+stability,1,0.5806,0.5806,0.5297
+STYLE_ONLY,17,1.0,1.0,1.0
+CLEAN,14,0.9516,0.9524,0.9886
+FULL,52,1.0,1.0,1.0

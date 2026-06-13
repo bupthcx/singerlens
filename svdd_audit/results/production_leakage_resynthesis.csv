@@ -1,0 +1,9 @@
+perturbation,n,mean_fake_score,median,high_score_ratio,delta_vs_clean
+clean,200,0.085,0.077,0.0,0.0
+accomp_leak_low_-12db,188,0.091,0.077,0.0,0.006
+accomp_leak_mid_-6db,188,0.075,0.067,0.0,-0.01
+accomp_leak_high_0db,188,0.083,0.08,0.0,-0.002
+leak_then_resep,188,0.262,0.238,0.053,0.177
+demucs_resep_clean,200,0.227,0.213,0.03,0.142
+mp3_32k,200,0.363,0.343,0.25,0.278
+reverb,200,0.232,0.223,0.045,0.147

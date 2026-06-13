@@ -1,0 +1,4 @@
+pair,bandlimited_AUC
+CtrSVDD->WildT02,0.434
+CtrSVDD->SingerLens,0.584
+SingerLens->CtrSVDD,0.602

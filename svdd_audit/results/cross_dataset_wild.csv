@@ -1,0 +1,13 @@
+feature_set,protocol,EER,AUC
+FULL,WildSVDD within-CV,14.81,0.935
+FULL,CtrSVDD -> WildSVDD,49.36,0.494
+FULL,SingerLens -> WildSVDD,56.44,0.447
+CLEAN,WildSVDD within-CV,26.61,0.793
+CLEAN,CtrSVDD -> WildSVDD,62.88,0.338
+CLEAN,SingerLens -> WildSVDD,54.51,0.47
+HNR,WildSVDD within-CV,31.97,0.746
+HNR,CtrSVDD -> WildSVDD,59.87,0.378
+HNR,SingerLens -> WildSVDD,55.37,0.451
+VRI,WildSVDD within-CV,41.42,0.624
+VRI,CtrSVDD -> WildSVDD,48.5,0.535
+VRI,SingerLens -> WildSVDD,47.64,0.537

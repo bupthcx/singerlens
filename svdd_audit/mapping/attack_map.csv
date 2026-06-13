@@ -1,0 +1,16 @@
+attack,system,type,vocoder_group,split
+A01,XiaoiceSing,SVS,hifigan,train_dev
+A02,VISinger,SVS,hifigan,train_dev
+A03,VISinger2,SVS,ddsp,train_dev
+A04,NNSVS,SVS,nsf-hifigan,train_dev
+A05,NaiveRNN,SVS,hifigan,train_dev
+A06,NU-SVC,SVC,nsf-hifigan,train_dev
+A07,SoftVITS-SVC,SVC,nsf-hifigan,train_dev
+A08,SoftVITS-SVC,SVC,nsf-hifigan,train_dev
+A09,SoftVITS-SVC,SVC,nsf-hifigan,eval
+A10,SoftVITS-SVC,SVC,nsf-hifigan,eval
+A11,SoftVITS-SVC,SVC,nsf-hifigan,eval
+A12,DiffSinger,SVS,hifigan,eval
+A13,SoftVITS-SVC,SVC,nsf-hifigan,eval
+A14,ACESinger,SVS,proprietary,eval
+-,bonafide,bonafide,bonafide,both

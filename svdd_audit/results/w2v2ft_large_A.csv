@@ -1,0 +1,3 @@
+tag,EER,AUC,F1,n
+w2v2large_ctr,8.5,0.97,0.912,1200
+w2v2large_ctr__crossSL,54.93,0.426,0.379,1085

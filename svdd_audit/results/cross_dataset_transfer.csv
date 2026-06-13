@@ -1,0 +1,17 @@
+feature_set,protocol,EER,AUC,F1
+FULL,A->A(CtrSVDD CV),18.88,0.899,0.811
+FULL,B->B(SingerLens CV),0.0,1.0,1.0
+FULL,"A->B(train Ctr,test SL)",42.03,0.615,0.661
+FULL,"B->A(train SL,test Ctr)",46.96,0.541,0.663
+CLEAN,A->A(CtrSVDD CV),35.96,0.701,0.642
+CLEAN,B->B(SingerLens CV),34.75,0.716,0.661
+CLEAN,"A->B(train Ctr,test SL)",50.69,0.527,0.626
+CLEAN,"B->A(train SL,test Ctr)",46.67,0.554,0.289
+HNR,A->A(CtrSVDD CV),45.17,0.58,0.546
+HNR,B->B(SingerLens CV),36.59,0.704,0.648
+HNR,"A->B(train Ctr,test SL)",46.17,0.564,0.614
+HNR,"B->A(train SL,test Ctr)",47.33,0.54,0.4
+VRI,A->A(CtrSVDD CV),44.5,0.569,0.557
+VRI,B->B(SingerLens CV),53.09,0.456,0.464
+VRI,"A->B(train Ctr,test SL)",48.57,0.525,0.474
+VRI,"B->A(train SL,test Ctr)",49.83,0.498,0.277

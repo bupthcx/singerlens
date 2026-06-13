@@ -1,0 +1,13 @@
+held_out,n_test_spoof,feature_set,EER,AUC,F1
+hifigan,900,FULL,31.76,0.773,0.663
+hifigan,900,CLEAN,40.57,0.621,0.575
+hifigan,900,HNR,48.33,0.529,0.506
+hifigan,900,VRI,47.67,0.532,0.541
+nsf-hifigan,1200,FULL,36.33,0.696,0.447
+nsf-hifigan,1200,CLEAN,46.25,0.546,0.47
+nsf-hifigan,1200,HNR,47.75,0.545,0.51
+nsf-hifigan,1200,VRI,51.25,0.486,0.412
+ddsp,300,FULL,28.67,0.799,0.463
+ddsp,300,CLEAN,32.96,0.714,0.372
+ddsp,300,HNR,49.33,0.527,0.318
+ddsp,300,VRI,41.33,0.607,0.349

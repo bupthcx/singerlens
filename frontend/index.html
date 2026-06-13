@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SingerLens · 一次对 AI 翻唱检测的侦查</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+  :root{
+    --bg:#f6f8fa; --panel:#ffffff; --panel2:#eef1f5; --line:#e2e6ec;
+    --txt:#1f2733; --mut:#67707d; --red:#e5484d; --redsoft:#d92d20;
+    --grn:#1f9d52; --amber:#b8860b; --blue:#2563eb; --cyan:#0e8a9a;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--txt);font-family:-apple-system,"Segoe UI","Microsoft YaHei",sans-serif;line-height:1.6}
+  .wrap{max-width:1060px;margin:0 auto;padding:0 20px}
+  header{padding:34px 0 18px;text-align:center;border-bottom:1px solid var(--line)}
+  header h1{font-size:30px;letter-spacing:.5px}
+  header h1 .em{color:var(--red)}
+  header p{color:var(--mut);margin-top:8px;font-size:15px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(246,248,250,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;overflow-x:auto;padding:10px 20px}
+  nav button{flex:0 0 auto;background:transparent;color:var(--mut);border:1px solid transparent;border-radius:8px;
+    padding:9px 14px;font-size:14px;cursor:pointer;white-space:nowrap;transition:.15s;font-family:inherit}
+  nav button:hover{color:var(--txt);background:var(--panel2)}
+  nav button.active{color:#fff;background:var(--redsoft);border-color:var(--red)}
+  section{display:none;padding:34px 0 60px;animation:fade .55s ease-in-out}
+  section.active{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  h2{font-size:23px;margin-bottom:6px}
+  h2 .tag{font-size:13px;color:var(--red);font-weight:600;display:block;letter-spacing:2px;margin-bottom:4px}
+  .lead{color:var(--mut);margin-bottom:24px;font-size:15px;max-width:760px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:22px;margin-bottom:20px;box-shadow:0 1px 3px rgba(16,24,40,.05)}
+  .tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .tablewrap table{min-width:460px}
+  .grid{display:grid;gap:16px}
+  .g4{grid-template-columns:repeat(4,1fr)} .g2{grid-template-columns:1fr 1fr} .g3{grid-template-columns:repeat(3,1fr)}
+  @media(max-width:760px){.g4,.g2,.g3{grid-template-columns:1fr 1fr}}
+  .stat{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:16px;text-align:center}
+  .stat .name{color:var(--mut);font-size:13px}
+  .stat .big{font-size:30px;font-weight:700;margin:6px 0}
+  .stat .in{color:var(--grn)} .stat .out{color:var(--red)}
+  .stat .arrow{color:var(--mut);font-size:12px}
+  .stat .num2{font-size:26px;font-weight:700;color:var(--cyan)}
+  .hero{display:flex;align-items:center;justify-content:center;gap:26px;flex-wrap:wrap;text-align:center;padding:10px 0 24px}
+  .hero .num{font-size:62px;font-weight:800;line-height:1}
+  .hero .g{color:var(--grn)} .hero .r{color:var(--red)}
+  .hero .lbl{color:var(--mut);font-size:13px;margin-top:6px}
+  .hero .to{font-size:34px;color:var(--mut)}
+  canvas{max-width:100%}
+  .toggle{display:inline-flex;gap:4px;background:var(--panel2);border:1px solid var(--line);border-radius:9px;padding:4px;margin-bottom:14px}
+  .toggle button{background:transparent;color:var(--mut);border:none;border-radius:6px;padding:7px 14px;cursor:pointer;font-size:13px;font-family:inherit}
+  .toggle button.active{background:var(--redsoft);color:#fff}
+  table{width:100%;border-collapse:collapse;font-size:14px}
+  th,td{padding:10px 12px;border-bottom:1px solid var(--line);text-align:left}
+  th{color:var(--mut);font-weight:600;font-size:13px;text-transform:uppercase;letter-spacing:.5px}
+  th.sortable{cursor:pointer;user-select:none;transition:color .15s}
+  th.sortable:hover{color:var(--txt)}
+  th.sortable .car{opacity:.45;font-size:11px;margin-left:3px}
+  th.sortable.act .car{opacity:1;color:var(--red)}
+  td.deg{font-weight:700;color:var(--red)}
+  td[title]{cursor:help;border-bottom:1px dotted var(--line)}
+  tr.hl td{background:rgba(179,38,30,.12)}
+  .slidewrap{display:grid;grid-template-columns:1.1fr .9fr;gap:24px;align-items:center}
+  @media(max-width:760px){.slidewrap{grid-template-columns:1fr}}
+  input[type=range]{width:100%;-webkit-appearance:none;height:8px;border-radius:6px;
+    background:linear-gradient(90deg,var(--grn),var(--amber) 55%,var(--red));outline:none;margin:18px 0}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:24px;height:24px;border-radius:50%;
+    background:#fff;border:3px solid var(--redsoft);cursor:pointer;box-shadow:0 2px 6px rgba(16,24,40,.25)}
+  .gauge{text-align:center}
+  .gauge .ring{position:relative;width:200px;height:200px;margin:0 auto}
+  .gauge svg{transform:rotate(-90deg)}
+  .gauge .center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+  .gauge .pval{font-size:42px;font-weight:800}
+  .gauge .cap{color:var(--mut);font-size:12px}
+  .verdict{margin-top:14px;font-size:16px;font-weight:600;min-height:26px}
+  .pill{display:inline-block;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:600}
+  .pill.ok{background:rgba(63,185,80,.16);color:var(--grn)}
+  .pill.warn{background:rgba(240,180,41,.16);color:var(--amber)}
+  .pill.bad{background:rgba(255,90,82,.16);color:var(--red)}
+  .cut{font-size:34px;font-weight:800;color:var(--cyan)}
+  .note{color:var(--mut);font-size:13px;margin-top:10px}
+  .caveat{color:var(--amber);font-size:12.5px;margin-top:6px}
+  .demo-shot{width:100%;max-height:560px;object-fit:cover;object-position:top;border:1px solid var(--line);border-radius:12px;display:block;box-shadow:0 2px 10px rgba(16,24,40,.07)}
+  .btn{display:inline-block;background:var(--redsoft);color:#fff;text-decoration:none;padding:10px 18px;border-radius:9px;font-size:14px;margin-top:8px}
+  code{background:var(--panel2);padding:2px 7px;border-radius:5px;font-size:13px;color:var(--cyan)}
+  .foot{color:var(--mut);font-size:12px;text-align:center;padding:24px 0;border-top:1px solid var(--line)}
+  ul.clean{list-style:none} ul.clean li{padding:6px 0;border-bottom:1px solid var(--line);font-size:14px}
+  ul.clean li b{color:var(--red)}
+  ol.steps{margin-left:18px;font-size:14px} ol.steps li{padding:5px 0}
+  .reversal{display:flex;gap:12px;align-items:flex-start;padding:9px 0;border-bottom:1px solid var(--line);font-size:14px}
+  .reversal .n{flex:0 0 28px;height:28px;border-radius:50%;background:var(--redsoft);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px}
+  .panel-item{font-size:14px;padding:7px 0;border-bottom:1px solid var(--line)}
+  .panel-item b{color:var(--cyan)}
+  #exportBtn{margin-top:14px;background:transparent;color:var(--mut);border:1px solid var(--line);
+    border-radius:8px;padding:7px 16px;font-size:13px;cursor:pointer;font-family:inherit;transition:.15s}
+  #exportBtn:hover{color:var(--red);border-color:var(--red);background:var(--panel)}
+  /* 打印态:屏幕上先展开所有章节,让隐藏 section 里的 canvas 拿到布局后再绘图 */
+  body.print-mode section{display:block!important}
+  @media print{
+    nav,#exportBtn{display:none!important}
+    body{background:#fff}
+    header{border-bottom:1px solid var(--line)}
+    section{display:block!important;animation:none;padding:20px 0;break-inside:avoid}
+    section+section{border-top:1px solid var(--line)}
+    .card{box-shadow:none;break-inside:avoid}
+    .demo-shot{max-height:none}
+    a.btn{display:none}
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <h1>🔍 SingerLens — 当 AI 翻唱检测器说自己<span class="em">"几乎完美"</span>时</h1>
+    <p>一次对歌声深度伪造检测(SVDD)评测的侦查 · 每个发现都是对上一个疑问的回应</p>
+    <button id="exportBtn" onclick="printReport()">🖨 导出 / 打印 PDF</button>
+  </div>
+</header>
+<nav><div class="wrap" id="nav"></div></nav>
+
+<!-- TAB 1 -->
+<section id="t1" class="active"><div class="wrap">
+  <h2><span class="tag">第一章 · 引子</span>一个说不通的反差</h2>
+  <p class="lead">在公开基准上,检测器号称 AUC ≈ 0.99,任务似乎已被解决。可一旦换个数据集去用,成绩断崖式坍塌到接近抛硬币。<b>这说明那 0.99 衡量的不是"能不能识别 AI",而是别的东西。</b></p>
+  <div class="hero">
+    <div><div class="num g" id="h-in">·</div><div class="lbl">域内 AUC(同数据集)</div></div>
+    <div class="to">⟶</div>
+    <div><div class="num r" id="h-out">·</div><div class="lbl">跨数据集 AUC</div></div>
+  </div>
+  <div class="grid g4" id="contrast"></div>
+  <div class="card">
+    <div class="toggle" id="sd-toggle">
+      <button data-k="within_domain" class="active">域内(分数清晰分离)</button>
+      <button data-k="cross_dataset">跨数据集(两类坍缩在一起)</button>
+    </div>
+    <canvas id="distChart" height="120"></canvas>
+    <div class="note" id="dist-note"></div>
+    <div class="caveat" id="dist-caveat"></div>
+  </div>
+</div></section>
+
+<!-- TAB 2 -->
+<section id="t2"><div class="wrap">
+  <h2><span class="tag">第二章 · 探索过程</span>排除嫌疑人,发现两个独立的轴</h2>
+  <p class="lead">疑问1:是声码器指纹吗?→ copy-synthesis 把真唱也过声码器,<b>不会被判假</b>,排除。疑问2:是某类生成方式?→ 留一声码器/留一范式,退化 2–3 倍。重大发现:把"范式 × 声码器"做因子化对照——<b>固定声码器、只换生成范式,EER 从约 1% 飙到约 50%</b>,比换声码器还狠。混杂有两个相互独立的轴。</p>
+  <div class="hero">
+    <div><div class="lbl">声码器固定 · 只换范式</div><div class="num r"><span id="big-deg">0</span>×</div><div class="lbl">退化倍数(随机森林,最大)</div></div>
+  </div>
+  <div class="card">
+    <table id="factTable">
+      <thead><tr><th>对照</th><th>固定</th>
+        <th class="sortable" data-col="2">域内 EER<span class="car">▾</span></th>
+        <th class="sortable" data-col="3">留出 EER<span class="car">▾</span></th>
+        <th class="sortable act" data-col="4">退化<span class="car">▾</span></th></tr></thead>
+      <tbody></tbody>
+    </table>
+    <div class="note">即便声码器完全相同,仅换范式(SVS↔SVC)就让检测器从近完美崩到掷硬币 → 推翻"只是声码器探测器"。AASIST 同向:<span id="aasist-para"></span>。</div>
+  </div>
+</div></section>
+
+<!-- TAB 3 -->
+<section id="t3"><div class="wrap">
+  <h2><span class="tag">第三章 · 找到真凶(互动核心)</span>一条"制作干净度"的轴</h2>
+  <p class="lead">真凶是<b>音频的制作签名(频谱带宽/编解码)</b>。拖动下面的滑块,把一段<b>真人演唱</b>的带宽逐步压窄——看检测器从什么时候开始把真人误判成 AI。</p>
+  <div class="card">
+    <div class="slidewrap">
+      <div>
+        <div style="display:flex;justify-content:space-between;color:var(--mut);font-size:13px">
+          <span>16 kHz(原始)</span><span>2 kHz(极窄)</span></div>
+        <input type="range" id="bwSlider" min="0" max="8" step="1" value="0">
+        <div style="text-align:center">低通截止频率：<span class="cut" id="cutVal">16.0</span> <span style="color:var(--mut)">kHz</span></div>
+        <div class="verdict" id="bwVerdict"></div>
+        <div class="note" id="bwNote"></div>
+      </div>
+      <div class="gauge">
+        <div class="ring">
+          <svg width="200" height="200" viewBox="0 0 200 200">
+            <circle cx="100" cy="100" r="84" fill="none" stroke="#e2e6ec" stroke-width="16"/>
+            <circle id="gaugeArc" cx="100" cy="100" r="84" fill="none" stroke="var(--red)" stroke-width="16"
+              stroke-linecap="round" stroke-dasharray="528" stroke-dashoffset="528"/>
+          </svg>
+          <div class="center"><div class="pval" id="gaugeVal">0.09</div><div class="cap">伪造概率(真唱)</div></div>
+        </div>
+        <div class="note" id="flipNote" style="margin-top:14px"></div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <canvas id="bwChart" height="120"></canvas>
+    <div class="note">红线=真唱平均伪造概率,随截止频率变化。<b style="color:var(--cyan)">6–7 kHz 是误判临界点</b>;<b style="color:var(--amber)">3–6 kHz 是危险带</b>(平台转码/分离常落区间)。</div>
+  </div>
+  <h2 style="font-size:18px;margin-top:8px">这不是中文特有的毛病</h2>
+  <p class="lead">用粤语(声调)和英文(非声调、Taylor Swift)真唱重跑,翻转率和普通话几乎一样——<b>英文带限翻转率 50%,甚至略高于普通话。混杂与语言无关。</b></p>
+  <div class="card"><canvas id="langChart" height="110"></canvas></div>
+</div></section>
+
+<!-- TAB 4 -->
+<section id="t4"><div class="wrap">
+  <h2><span class="tag">第四章 · 能不能修</span>四条捷径全败,唯有标少量目标数据</h2>
+  <p class="lead">无监督域适应、消除带宽、重标定、甚至换一条语义线索(情感一致性)——<b>全部停在随机带</b>。唯一管用的是:在目标域标少量数据从头训练。<b>10 个标签就开始 work。</b></p>
+  <div class="card"><canvas id="msaChart" height="130"></canvas>
+    <div class="note" id="msa-note"></div></div>
+  <div class="card">
+    <h2 style="font-size:17px">让出口更省标签:不确定性主动选样 (U-MSA)</h2>
+    <p class="note" style="margin:8px 0 12px">把"随机选 k 个去标注"换成"专挑模型最犹豫的样本"(固定 30% 测试集,消除测试集变简单的假象)。<b style="color:var(--red)">达 0.90 省 ~25% 标签(150 vs 200)</b>——多 seed 检验下该优势在中高预算(k≥100)稳健(配对胜率达 0.92),小预算(k≤50)与随机相当。免标签的纯多样性选样(k-center)反而更差——机制上 uncertainty 确实在挑决策边界附近的样本(边界邻近度 0.15 vs 随机 0.19)。增益中等但一致(同预算 ~+0.02~0.03 AUC),仍是 per-target 监督。</p>
+    <canvas id="umsaChart" height="130"></canvas>
+  </div>
+  <div class="grid g2">
+    <div class="card">
+      <h2 style="font-size:17px">学到的是真线索,还是又一个捷径?</h2>
+      <p class="note" style="margin:8px 0 14px">对少样本检测器做特征归因:仅 50 个标签,HNR(真实真伪线索)权重就从源域 0.055 跳到 0.123,走完到域内目标(0.146)约 80% 的路。<b>它恢复的是目标域真实判别轴,不是新捷径</b>——但仍是<b>每目标监督</b>(换新平台需各标各的)。</p>
+      <canvas id="hnrChart" height="150"></canvas>
+    </div>
+    <div class="card">
+      <h2 style="font-size:17px">免标注捷径 vs 最小监督</h2>
+      <ul class="clean" id="unsupList"></ul>
+    </div>
+  </div>
+</div></section>
+
+<!-- TAB 5 -->
+<section id="t5"><div class="wrap">
+  <h2><span class="tag">第五章 · 系统与实时 Demo</span>SingerLens</h2>
+  <p class="lead">整场侦查建立在我们自建的 SingerLens 上——它既是数据生产线,也是一个可现场演示的可解释检测系统。</p>
+  <div class="grid g3">
+    <div class="stat"><div class="name">自建歌手 × 歌曲</div><div class="num2">6 × 3</div><div class="name">1085 片段</div></div>
+    <div class="stat"><div class="name">审计数据集</div><div class="num2">3</div><div class="name">受控 / 自建 / 野生</div></div>
+    <div class="stat"><div class="name">检测器家族</div><div class="num2">3</div><div class="name">手工 / 神经 / SSL</div></div>
+  </div>
+  <div class="grid g2">
+    <div class="card">
+      <h2 style="font-size:17px">数据生产线</h2>
+      <ul class="clean" style="margin-top:8px">
+        <li><b style="color:var(--grn)">真唱</b> B 站公开演唱 → Demucs 人声分离 → 10s 切片(16kHz)</li>
+        <li><b style="color:var(--red)">AI 翻唱</b> Seed-VC(每歌手以自身高质片段为目标、保留音区)</li>
+        <li><b style="color:var(--cyan)">对照集</b> 真唱也过同一声码器(隔离声码器足迹)</li>
+        <li>另接入 CtrSVDD(受控基准)+ WildSVDD(野生 bilibili 翻唱)</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h2 style="font-size:17px">Demo 五个面板(Gradio, :7860)</h2>
+      <div class="panel-item"><b>真伪判断</b> · 真/假 + 置信度</div>
+      <div class="panel-item"><b>风格画像雷达</b> · 片段 / 真人均值 / AI 均值</div>
+      <div class="panel-item"><b>逐特征异常表</b> · 哪些维度偏离真人</div>
+      <div class="panel-item"><b>异常时间轴</b> · 片段内逐段 AI 概率(模型在哪最"犹豫")</div>
+      <div class="panel-item"><b>情感一致性</b> · 歌词情感 vs 演唱情感(Whisper + emotion2vec)</div>
+    </div>
+  </div>
+  <div class="card">
+    <h2 style="font-size:17px">现场演示脚本(对着投影 3 步)</h2>
+    <ol class="steps">
+      <li>上传一段<b style="color:var(--grn)">真人演唱</b> → 系统判"真",伪造概率约 0.08;</li>
+      <li>把<b>同一段</b>低通到 4 kHz 再上传 → 伪造概率跳到约 0.40,被误判"假"(呼应第三章带宽滑块);</li>
+      <li>上传一段 <b style="color:var(--red)">AI 翻唱</b> → 判"假" + 情感面板显示歌词-演唱情感不一致。</li>
+    </ol>
+    <img class="demo-shot" id="demoImg" alt="SingerLens Gradio Demo" src="../svdd_audit/results/demo_screenshot.png" style="margin-top:14px"
+      onerror="this.style.display='none';document.getElementById('demoFallback').style.display='block'">
+    <div id="demoFallback" style="display:none" class="note">截图未找到(放置 demo_screenshot.png 于 ../svdd_audit/results/)。</div>
+    <a class="btn" id="demoLink" href="#" target="_blank">打开实时 Demo →</a>
+    <div class="note">本地访问:<code>ssh -L 7860:localhost:7860 3090-shahe</code> 后开 <code>http://localhost:7860</code></div>
+  </div>
+</div></section>
+
+<!-- TAB 6 -->
+<section id="t6"><div class="wrap">
+  <h2><span class="tag">第六章 · 结论与分工</span>一句话与一张表</h2>
+  <div class="card" style="text-align:center;border-color:var(--redsoft)">
+    <div style="font-size:19px;font-weight:700;line-height:1.7">SVDD 远没有被解决——一旦控制住混杂,<br>基准上的高分大多是在认<span style="color:var(--cyan)">"哪条产线"</span>,而不是<span style="color:var(--red)">"是不是 AI"</span>。</div>
+  </div>
+  <div class="grid g2">
+    <div class="card">
+      <h2 style="font-size:17px">部署四条建议</h2>
+      <ul class="clean" style="margin-top:8px">
+        <li>① benchmark 检测器<b>不能直接上线</b>(跨数据集≈随机)</li>
+        <li>② 置信阈值<b>不是安全网</b>(跨域高置信也错)</li>
+        <li>③ 新平台<b>优先标少量目标数据</b>(10 个起步)</li>
+        <li>④ 上线前<b>评估制作链路</b>(转码/带宽是误报源)</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h2 style="font-size:17px">侦查里的 5 个反转</h2>
+      <div class="reversal"><div class="n">1</div><div>太完美 → 是产线泄露的陷阱</div></div>
+      <div class="reversal"><div class="n">2</div><div>单歌手很准 → 只是过拟合歌手身份</div></div>
+      <div class="reversal"><div class="n">3</div><div>FULL 特征最强 → 只是声码器/产线探测器</div></div>
+      <div class="reversal"><div class="n">4</div><div>上对抗去偏 → 反而比简单方法更差</div></div>
+      <div class="reversal"><div class="n">5</div><div>看局部/语义捷径 → 跨域照样崩</div></div>
+    </div>
+  </div>
+  <div class="card">
+    <h2 style="font-size:17px">分工(请按实际贡献填写)</h2>
+    <table>
+      <thead><tr><th>成员</th><th>负责模块</th></tr></thead>
+      <tbody>
+        <tr><td>_______</td><td>数据采集与处理(B站下载 / Demucs / Seed-VC 生成)</td></tr>
+        <tr><td>_______</td><td>审计协议与跨数据集实验(LOVO / LOGO / 因子化 / cross-dataset)</td></tr>
+        <tr><td>_______</td><td>归因与因果实验(attribution / 扰动 / 带宽扫描 / 三语种)</td></tr>
+        <tr><td>_______</td><td>修复实验与 MSA(DA / confound-removal / few-shot / attribution)</td></tr>
+        <tr><td>_______</td><td>系统与前端(Gradio / 情感服务 / 本可视化页面)+ 报告</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div></section>
+
+<div class="foot">SingerLens · SVDD-Audit ｜ 数据来自 frontend_data.json(真实实验结果) ｜ 语音信息处理课程项目</div>
+
+<script>
+const DATA = {
+  "tab1_problem": {
+    "contrast": [
+      {
+        "detector": "AASIST",
+        "in_domain_auc": 0.987,
+        "cross_auc": 0.596
+      },
+      {
+        "detector": "Random Forest",
+        "in_domain_auc": 0.899,
+        "cross_auc": 0.615
+      },
+      {
+        "detector": "wav2vec2 (SSL)",
+        "in_domain_auc": 0.912,
+        "cross_auc": 0.417
+      },
+      {
+        "detector": "wav2vec2-large",
+        "in_domain_auc": 0.97,
+        "cross_auc": 0.426
+      }
+    ],
+    "headline": {
+      "in_domain": "0.90-0.99",
+      "cross_dataset": "0.34-0.62",
+      "in_round": "0.99",
+      "out_round": "0.50"
+    },
+    "score_distribution": {
+      "within_domain": {
+        "protocol": "CtrSVDD_within",
+        "auc": 0.894,
+        "real": {
+          "x": [
+            0.021,
+            0.062,
+            0.104,
+            0.146,
+            0.188,
+            0.229,
+            0.271,
+            0.312,
+            0.354,
+            0.396,
+            0.438,
+            0.479,
+            0.521,
+            0.562,
+            0.604,
+            0.646,
+            0.688,
+            0.729,
+            0.771,
+            0.812,
+            0.854,
+            0.896,
+            0.938,
+            0.979
+          ],
+          "y": [
+            0.18,
+            0.761,
+            1.252,
+            1.342,
+            1.783,
+            1.913,
+            2.104,
+            2.224,
+            2.154,
+            2.033,
+            2.053,
+            1.643,
+            1.883,
+            1.132,
+            0.671,
+            0.441,
+            0.2,
+            0.08,
+            0.08,
+            0.06,
+            0.01,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "fake": {
+          "x": [
+            0.021,
+            0.062,
+            0.104,
+            0.146,
+            0.188,
+            0.229,
+            0.271,
+            0.312,
+            0.354,
+            0.396,
+            0.438,
+            0.479,
+            0.521,
+            0.562,
+            0.604,
+            0.646,
+            0.688,
+            0.729,
+            0.771,
+            0.812,
+            0.854,
+            0.896,
+            0.938,
+            0.979
+          ],
+          "y": [
+            0.0,
+            0.0,
+            0.0,
+            0.021,
+            0.085,
+            0.159,
+            0.18,
+            0.36,
+            0.509,
+            0.879,
+            1.261,
+            1.664,
+            2.045,
+            2.045,
+            2.278,
+            2.331,
+            2.268,
+            1.928,
+            1.971,
+            1.695,
+            1.081,
+            0.816,
+            0.381,
+            0.042
+          ]
+        }
+      },
+      "cross_dataset": {
+        "protocol": "CtrSVDD->Wild_all",
+        "real": {
+          "x": [
+            0.021,
+            0.062,
+            0.104,
+            0.146,
+            0.188,
+            0.229,
+            0.271,
+            0.312,
+            0.354,
+            0.396,
+            0.438,
+            0.479,
+            0.521,
+            0.562,
+            0.604,
+            0.646,
+            0.688,
+            0.729,
+            0.771,
+            0.812,
+            0.854,
+            0.896,
+            0.938,
+            0.979
+          ],
+          "y": [
+            0.0,
+            0.0,
+            0.0,
+            0.105,
+            0.105,
+            0.21,
+            0.0,
+            0.419,
+            0.314,
+            0.419,
+            1.048,
+            1.362,
+            1.991,
+            2.201,
+            2.41,
+            3.668,
+            2.515,
+            1.572,
+            2.934,
+            1.048,
+            0.943,
+            0.734,
+            0.0,
+            0.0
+          ]
+        },
+        "fake": {
+          "x": [
+            0.021,
+            0.062,
+            0.104,
+            0.146,
+            0.188,
+            0.229,
+            0.271,
+            0.312,
+            0.354,
+            0.396,
+            0.438,
+            0.479,
+            0.521,
+            0.562,
+            0.604,
+            0.646,
+            0.688,
+            0.729,
+            0.771,
+            0.812,
+            0.854,
+            0.896,
+            0.938,
+            0.979
+          ],
+          "y": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.101,
+            0.203,
+            0.81,
+            1.215,
+            2.228,
+            1.316,
+            1.519,
+            2.127,
+            1.924,
+            3.038,
+            2.734,
+            2.025,
+            2.633,
+            1.215,
+            0.709,
+            0.101,
+            0.101,
+            0.0
+          ]
+        },
+        "auc": 0.464
+      }
+    }
+  },
+  "tab2_exploration": {
+    "factorial_FULL": [
+      {
+        "contrast": "voc-shift|para=SVS",
+        "train": "SVS×hifigan",
+        "test": "SVS×ddsp",
+        "in_dist_eer": 2.33,
+        "held_out_eer": 29.71,
+        "degradation": 12.8
+      },
+      {
+        "contrast": "voc-shift|para=SVS",
+        "train": "SVS×hifigan",
+        "test": "SVS×nsf-hifigan",
+        "in_dist_eer": 1.38,
+        "held_out_eer": 39.67,
+        "degradation": 28.8
+      },
+      {
+        "contrast": "para-shift|voc=nsf",
+        "train": "SVC×nsf-hifigan",
+        "test": "SVS×nsf-hifigan",
+        "in_dist_eer": 0.62,
+        "held_out_eer": 55.33,
+        "degradation": 89.2
+      },
+      {
+        "contrast": "para-shift|voc=nsf",
+        "train": "SVS×nsf-hifigan",
+        "test": "SVC×nsf-hifigan",
+        "in_dist_eer": 0.81,
+        "held_out_eer": 48.0,
+        "degradation": 59.3
+      }
+    ],
+    "aasist_paradigm": {
+      "in_dist_eer": 4.0,
+      "held_out_eer": 54.29,
+      "degradation": 13.6
+    }
+  },
+  "tab3_culprit": {
+    "bandwidth_sweep": [
+      {
+        "cutoff_hz": 16000,
+        "cutoff_khz": 16.0,
+        "mean_fake_score": 0.085,
+        "flip_rate": 0.0
+      },
+      {
+        "cutoff_hz": 7500,
+        "cutoff_khz": 7.5,
+        "mean_fake_score": 0.206,
+        "flip_rate": 0.025
+      },
+      {
+        "cutoff_hz": 6000,
+        "cutoff_khz": 6.0,
+        "mean_fake_score": 0.414,
+        "flip_rate": 0.325
+      },
+      {
+        "cutoff_hz": 5000,
+        "cutoff_khz": 5.0,
+        "mean_fake_score": 0.401,
+        "flip_rate": 0.27
+      },
+      {
+        "cutoff_hz": 4000,
+        "cutoff_khz": 4.0,
+        "mean_fake_score": 0.397,
+        "flip_rate": 0.13
+      },
+      {
+        "cutoff_hz": 3500,
+        "cutoff_khz": 3.5,
+        "mean_fake_score": 0.429,
+        "flip_rate": 0.305
+      },
+      {
+        "cutoff_hz": 3000,
+        "cutoff_khz": 3.0,
+        "mean_fake_score": 0.45,
+        "flip_rate": 0.465
+      },
+      {
+        "cutoff_hz": 2500,
+        "cutoff_khz": 2.5,
+        "mean_fake_score": 0.375,
+        "flip_rate": 0.14
+      },
+      {
+        "cutoff_hz": 2000,
+        "cutoff_khz": 2.0,
+        "mean_fake_score": 0.335,
+        "flip_rate": 0.05
+      }
+    ],
+    "critical_onset_khz": [
+      6,
+      7
+    ],
+    "danger_band_khz": [
+      3,
+      6
+    ],
+    "crosslang": [
+      {
+        "perturbation": "resample-8k",
+        "mandarin": 0.465,
+        "cantonese": 0.39,
+        "english": 0.5
+      },
+      {
+        "perturbation": "low-pass 4k",
+        "mandarin": 0.13,
+        "cantonese": 0.133,
+        "english": 0.154
+      },
+      {
+        "perturbation": "low-pass 3k",
+        "mandarin": 0.465,
+        "cantonese": 0.324,
+        "english": 0.423
+      },
+      {
+        "perturbation": "MP3-32k",
+        "mandarin": 0.25,
+        "cantonese": 0.0,
+        "english": 0.154
+      },
+      {
+        "perturbation": "noise 10dB",
+        "mandarin": 0.0,
+        "cantonese": 0.0,
+        "english": 0.0
+      }
+    ]
+  },
+  "tab4_fix": {
+    "umsa": {"k":[30,50,75,100,150,200],"random":[0.730,0.797,0.840,0.875,0.889,0.908],"uncertainty":[0.747,0.820,0.848,0.880,0.915,0.925],"kcenter":[0.709,0.757,0.812,0.841,0.878,0.904]},
+    "msa_curve": [
+      {
+        "k": 10,
+        "auc": 0.633,
+        "std": 0.068
+      },
+      {
+        "k": 20,
+        "auc": 0.701,
+        "std": 0.061
+      },
+      {
+        "k": 30,
+        "auc": 0.769,
+        "std": 0.043
+      },
+      {
+        "k": 50,
+        "auc": 0.816,
+        "std": 0.032
+      },
+      {
+        "k": 75,
+        "auc": 0.839,
+        "std": 0.033
+      },
+      {
+        "k": 100,
+        "auc": 0.86,
+        "std": 0.029
+      },
+      {
+        "k": 150,
+        "auc": 0.894,
+        "std": 0.026
+      },
+      {
+        "k": 200,
+        "auc": 0.909,
+        "std": 0.026
+      },
+      {
+        "k": 240,
+        "auc": 0.919,
+        "std": 0.024
+      }
+    ],
+    "in_domain_bound": 0.925,
+    "best_unsupervised": 0.52,
+    "unsupervised": [
+      {
+        "method": "CORAL",
+        "auc": 0.474
+      },
+      {
+        "method": "subspace",
+        "auc": 0.517
+      },
+      {
+        "method": "DANN",
+        "auc": 0.442
+      },
+      {
+        "method": "calibration",
+        "auc": 0.485
+      },
+      {
+        "method": "emotion (semantic)",
+        "auc": 0.412
+      }
+    ],
+    "hnr_trajectory": {
+      "labels": [
+        "Source",
+        "k=50",
+        "k=100",
+        "Within-target"
+      ],
+      "HNR": [
+        0.055,
+        0.123,
+        0.132,
+        0.146
+      ],
+      "MFCC": [
+        0.642,
+        0.56,
+        0.556,
+        0.561
+      ]
+    }
+  },
+  "tab5_demo": {
+    "gradio_url": "http://10.122.193.120:7860",
+    "note": "real-time inference; needs SSH port-forward or server access",
+    "panels": [
+      "verdict",
+      "style-radar",
+      "anomaly-table",
+      "anomaly-timeline",
+      "emotion-consistency"
+    ]
+  }
+};
+const tabs=[['t1','① 引子'],['t2','② 探索'],['t3','③ 找到真凶'],['t4','④ 能不能修'],['t5','⑤ 系统 Demo'],['t6','⑥ 结论分工']];
+const nav=document.getElementById('nav');
+tabs.forEach(([id,label],i)=>{const b=document.createElement('button');b.textContent=label;b.dataset.t=id;
+  if(i===0)b.classList.add('active');b.onclick=()=>show(id,b);nav.appendChild(b);});
+let charted={};
+function show(id,btn){document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('#nav button').forEach(b=>b.classList.remove('active'));btn.classList.add('active');
+  if(id==='t2')animateDeg(); if(!charted[id]){charted[id]=1;draw(id);}}
+const C={grid:'#e2e6ec',txt:'#67707d',red:'#e5484d',redsoft:'#d92d20',grn:'#1f9d52',amber:'#b8860b',blue:'#2563eb',cyan:'#0e8a9a'};
+Chart.defaults.color=C.txt;Chart.defaults.borderColor=C.grid;Chart.defaults.font.family='Segoe UI,Microsoft YaHei,sans-serif';
+
+/* ---- Tab1 ---- */
+const HL=DATA.tab1_problem.headline;
+document.getElementById('h-in').textContent=HL.in_round||'0.99';
+document.getElementById('h-out').textContent=HL.out_round||'0.50';
+(function(){const cc=document.getElementById('contrast');
+  DATA.tab1_problem.contrast.forEach(d=>{cc.innerHTML+=`<div class="stat"><div class="name">${d.detector}</div>
+    <div class="big in">${d.in_domain_auc}</div><div class="arrow">↓ 跨数据集</div>
+    <div class="big out">${d.cross_auc}</div></div>`;});})();
+let distChart;
+function drawDist(key){
+  const d=DATA.tab1_problem.score_distribution[key];const ctx=document.getElementById('distChart');
+  if(distChart)distChart.destroy();
+  distChart=new Chart(ctx,{type:'line',data:{labels:d.real.x,datasets:[
+    {label:'真唱',data:d.real.y,borderColor:C.grn,backgroundColor:'rgba(63,185,80,.18)',fill:true,tension:.35,pointRadius:0},
+    {label:'AI 翻唱',data:d.fake.y,borderColor:C.red,backgroundColor:'rgba(255,90,82,.18)',fill:true,tension:.35,pointRadius:0}]},
+    options:{plugins:{legend:{labels:{usePointStyle:true}}},scales:{x:{title:{display:true,text:'伪造概率 p(fake)'},ticks:{maxTicksLimit:6}},y:{title:{display:true,text:'密度'}}}}});
+  const within=key==='within_domain';
+  document.getElementById('dist-note').textContent = within
+    ? `域内(CtrSVDD 受控基准):真假分布清晰分离,检测器轻松区分(AUC≈${d.auc||0.89})。`
+    : `跨数据集(CtrSVDD→WildSVDD):两类分布坍缩重叠,检测器无法区分(AUC≈${d.auc||0.46},接近随机)。`;
+  document.getElementById('dist-caveat').textContent = within
+    ? '※ 此处用受控基准 CtrSVDD 作代表;自建数据集上 AUC 甚至达 1.0,但那是产线泄露的"警示性极端案例"(详见第二章因子化分析),我们刻意不拿它作开场。' : '';
+}
+document.querySelectorAll('#sd-toggle button').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('#sd-toggle button').forEach(x=>x.classList.remove('active'));b.classList.add('active');drawDist(b.dataset.k);});
+
+/* ---- Tab2 ---- */
+const FACT=DATA.tab2_exploration.factorial_FULL;
+const DEG_MAX=Math.round(Math.max(...FACT.map(r=>r.degradation)));
+(function(){const tb=document.querySelector('#factTable tbody');
+  FACT.forEach(r=>{const hl=r.degradation>50?'hl':'';
+    tb.innerHTML+=`<tr class="${hl}"><td>${r.contrast.includes('para')?'换范式':'换声码器'}</td><td>${r.train.replace('×',' × ')} → ${(r.test.split('×')[1]||'')}</td>
+    <td>${r.in_dist_eer}%</td><td>${r.held_out_eer}%</td><td class="deg">${r.degradation}×</td></tr>`;});
+  const ap=DATA.tab2_exploration.aasist_paradigm;
+  document.getElementById('aasist-para').textContent=`${ap.in_dist_eer}% → ${ap.held_out_eer}%(${ap.degradation}×)`;})();
+/* 因子化表:点击表头按数值排序 */
+(function(){const tbl=document.getElementById('factTable');const body=tbl.tBodies[0];
+  tbl.querySelectorAll('th.sortable').forEach(th=>{let asc=false;
+    th.addEventListener('click',()=>{const col=+th.dataset.col;asc=!asc;
+      tbl.querySelectorAll('th.sortable').forEach(x=>{x.classList.remove('act');x.querySelector('.car').textContent='▾';});
+      th.classList.add('act');th.querySelector('.car').textContent=asc?'▴':'▾';
+      [...body.rows].sort((a,b)=>{const va=parseFloat(a.cells[col].textContent.replace(/[^\d.\-]/g,''))||0;
+        const vb=parseFloat(b.cells[col].textContent.replace(/[^\d.\-]/g,''))||0;return asc?va-vb:vb-va;})
+        .forEach(r=>body.appendChild(r));});});})();
+let degDone=false;
+function animateDeg(){if(degDone)return;degDone=true;const el=document.getElementById('big-deg');let v=0;
+  const step=Math.max(1,Math.round(DEG_MAX/30));
+  const t=setInterval(()=>{v+=step;if(v>=DEG_MAX){v=DEG_MAX;clearInterval(t);}el.textContent=v;},22);}
+
+/* ---- Tab3 ---- */
+const BW=DATA.tab3_culprit.bandwidth_sweep;const sl=document.getElementById('bwSlider');sl.max=BW.length-1;
+let bwChart;
+function bwUpdate(){
+  const p=BW[+sl.value];
+  document.getElementById('cutVal').textContent=p.cutoff_khz.toFixed(1);
+  document.getElementById('gaugeVal').textContent=p.mean_fake_score.toFixed(2);
+  document.getElementById('gaugeArc').style.strokeDashoffset=528*(1-Math.min(p.mean_fake_score/.5,1));
+  document.getElementById('gaugeArc').style.stroke=p.mean_fake_score>0.4?C.red:(p.mean_fake_score>0.2?C.amber:C.grn);
+  document.getElementById('flipNote').innerHTML=`被翻成"假"的真唱比例：<b style="color:${p.flip_rate>.25?'#e5484d':p.flip_rate>.05?'#b8860b':'#1f9d52'}">${(p.flip_rate*100).toFixed(0)}%</b>`;
+  const k=p.cutoff_khz;let v,cls;
+  if(k>=8){v='✅ 真唱被正确判别 —— 带宽充足';cls='ok';}
+  else if(k>=6){v='⚠ 临界点!检测器开始把真人误判为 AI';cls='warn';}
+  else if(k>=3){v='🚨 危险带 —— 大量真唱被判成"假"';cls='bad';}
+  else{v='↩ 过度退化,进入另一频谱区,分数回落';cls='warn';}
+  document.getElementById('bwVerdict').innerHTML=`<span class="pill ${cls}">${v}</span>`;
+  document.getElementById('bwNote').textContent=(k>=6&&k<8)?'平台转码 / 人声分离常把带宽压到这个区间。':'';
+  if(bwChart){bwChart.data.datasets[1].data=BW.map(b=>b.cutoff_khz===p.cutoff_khz?b.mean_fake_score:null);bwChart.update('none');}
+}
+sl.oninput=bwUpdate;
+function drawT3(){
+  bwChart=new Chart(document.getElementById('bwChart'),{type:'line',
+    data:{labels:BW.map(b=>b.cutoff_khz),datasets:[
+      {label:'平均伪造概率',data:BW.map(b=>b.mean_fake_score),borderColor:C.red,backgroundColor:'rgba(255,90,82,.12)',fill:true,tension:.3,pointRadius:3},
+      {label:'当前位置',data:[],borderColor:C.cyan,backgroundColor:C.cyan,pointRadius:9,showLine:false}]},
+    options:{plugins:{legend:{labels:{usePointStyle:true}}},scales:{
+      x:{title:{display:true,text:'低通截止频率 (kHz) — 越往右越窄'}},
+      y:{min:0,max:.6,title:{display:true,text:'真唱平均伪造概率'}}}}});
+  const cl=DATA.tab3_culprit.crosslang;
+  new Chart(document.getElementById('langChart'),{type:'bar',
+    data:{labels:cl.map(c=>c.perturbation),datasets:[
+      {label:'普通话',data:cl.map(c=>c.mandarin*100),backgroundColor:C.blue},
+      {label:'粤语',data:cl.map(c=>c.cantonese*100),backgroundColor:C.amber},
+      {label:'英文',data:cl.map(c=>c.english*100),backgroundColor:C.red}]},
+    options:{plugins:{legend:{labels:{usePointStyle:true}},title:{display:true,text:'真唱被翻成"假"的比率 (%) — 三语种'}},
+      scales:{y:{title:{display:true,text:'flip→fake (%)'}}}}});
+  bwUpdate();
+}
+
+/* ---- Tab4 ---- */
+function drawT4(){
+  const mc=DATA.tab4_fix.msa_curve,bnd=DATA.tab4_fix.in_domain_bound,un=DATA.tab4_fix.best_unsupervised;
+  new Chart(document.getElementById('msaChart'),{type:'line',
+    data:{labels:mc.map(p=>p.k),datasets:[
+      {label:'目标标签从头训练',data:mc.map(p=>p.auc),borderColor:C.grn,backgroundColor:'rgba(63,185,80,.14)',fill:true,tension:.3,pointRadius:4},
+      {label:`域内上界 ${bnd}`,data:mc.map(()=>bnd),borderColor:C.cyan,borderDash:[6,4],pointRadius:0,fill:false},
+      {label:`无监督最佳 ≤${un}`,data:mc.map(()=>un),borderColor:C.red,borderDash:[4,4],pointRadius:0,fill:false}]},
+    options:{plugins:{legend:{labels:{usePointStyle:true}}},scales:{
+      x:{title:{display:true,text:'目标标签数 k'}},y:{min:.4,max:1,title:{display:true,text:'留出 AUC'}}}}});
+  const k10=mc.find(p=>p.k===10);
+  document.getElementById('msa-note').innerHTML=`仅 <b>k=10</b> 即达 AUC ${k10?k10.auc:0.63},已离开随机带并超过所有无监督方法;收益集中在前几十个标签(0.90+ 需约 200 个,约目标集一半)。`;
+  const tr=DATA.tab4_fix.hnr_trajectory;
+  new Chart(document.getElementById('hnrChart'),{type:'line',
+    data:{labels:tr.labels,datasets:[
+      {label:'HNR(真实线索)',data:tr.HNR,borderColor:C.grn,backgroundColor:'rgba(63,185,80,.12)',fill:true,tension:.2,pointRadius:5},
+      {label:'MFCC(源域捷径)',data:tr.MFCC,borderColor:C.amber,tension:.2,pointRadius:5}]},
+    options:{plugins:{legend:{labels:{usePointStyle:true,boxWidth:8}}},scales:{y:{title:{display:true,text:'特征重要性'}}}}});
+  const ul=document.getElementById('unsupList');
+  DATA.tab4_fix.unsupervised.forEach(u=>ul.innerHTML+=`<li>${u.method} <b style="float:right">${u.auc}</b></li>`);
+  const k50=mc.find(p=>p.k===50);
+  ul.innerHTML+=`<li style="border:none">目标标签 k=50 <b style="float:right;color:#1f9d52">${k50?k50.auc:0.82}</b></li>`;
+  const um=DATA.tab4_fix.umsa;
+  if(um){new Chart(document.getElementById('umsaChart'),{type:'line',
+    data:{labels:um.k,datasets:[
+      {label:'U-MSA (不确定性主动选样)',data:um.uncertainty,borderColor:C.red,backgroundColor:'rgba(229,72,77,.10)',fill:true,tension:.3,pointRadius:4},
+      {label:'随机选样',data:um.random,borderColor:C.txt,borderDash:[5,4],tension:.3,pointRadius:3},
+      {label:'k-center (免标签多样性)',data:um.kcenter,borderColor:C.blue,borderDash:[2,3],tension:.3,pointRadius:3}]},
+    options:{plugins:{legend:{labels:{usePointStyle:true,boxWidth:8}},title:{display:true,text:'标签效率(固定 30% 测试集):AUC vs 目标标签数 k'}},
+      scales:{x:{title:{display:true,text:'目标标签数 k'}},y:{min:0.7,max:0.95,title:{display:true,text:'留出 AUC'}}}}});}
+}
+
+/* ---- Tab5 ---- */
+(function(){const d=DATA.tab5_demo;document.getElementById('demoLink').href=d.gradio_url;})();
+
+function draw(id){if(id==='t1')drawDist('within_domain');if(id==='t3')drawT3();if(id==='t4')drawT4();}
+draw('t1');charted.t1=1;
+
+/* 导出/打印:先展开所有章节并补绘未画的图表,再调起打印 */
+function printReport(){
+  document.body.classList.add('print-mode');
+  if(!charted.t2){animateDeg();charted.t2=1;}
+  if(!charted.t3){drawT3();charted.t3=1;}
+  if(!charted.t4){drawT4();charted.t4=1;}
+  setTimeout(()=>{Object.values(Chart.instances||{}).forEach(c=>{try{c.resize();}catch(e){}});
+    setTimeout(()=>window.print(),120);},350);
+}
+window.addEventListener('afterprint',()=>document.body.classList.remove('print-mode'));
+</script>
+</body>
+</html>

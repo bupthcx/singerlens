@@ -1,0 +1,16 @@
+k,method,AUC,AUC_std,bal_acc
+25,target_only,0.72,0.055,0.655
+25,src_naive,0.557,0.019,0.532
+25,src_upsample,0.619,0.032,0.588
+25,src_domain_balanced,0.588,0.027,0.567
+25,calibration_only,0.492,0.012,0.496
+50,target_only,0.798,0.051,0.719
+50,src_naive,0.58,0.02,0.547
+50,src_upsample,0.69,0.04,0.643
+50,src_domain_balanced,0.649,0.034,0.612
+50,calibration_only,0.496,0.011,0.495
+100,target_only,0.852,0.028,0.769
+100,src_naive,0.638,0.025,0.598
+100,src_upsample,0.773,0.028,0.707
+100,src_domain_balanced,0.734,0.027,0.67
+100,calibration_only,0.485,0.015,0.489

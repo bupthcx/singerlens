@@ -1,0 +1,17 @@
+feature_group,test_on,accuracy,f1,auc
+voice_quality,singer_a,0.5815,0.6051,0.597
+voice_quality,singer_b,0.5478,0.1839,0.6469
+voice_quality,singer_c,0.6648,0.6053,0.7748
+voice_quality,MEAN,,,0.6729
+vri,singer_a,0.4348,0.4409,0.4208
+vri,singer_b,0.465,0.3913,0.4165
+vri,singer_c,0.4693,0.4379,0.4501
+vri,MEAN,,,0.4291
+CLEAN,singer_a,0.5652,0.6552,0.6021
+CLEAN,singer_b,0.535,0.1412,0.6432
+CLEAN,singer_c,0.6089,0.4444,0.7918
+CLEAN,MEAN,,,0.679
+FULL,singer_a,1.0,1.0,1.0
+FULL,singer_b,1.0,1.0,1.0
+FULL,singer_c,1.0,1.0,1.0
+FULL,MEAN,,,1.0

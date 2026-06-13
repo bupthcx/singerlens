@@ -1,0 +1,4 @@
+group,n,native_sr_mode,dur_med,rms_mean,f0_mean,f0_std,hnr_low_ratio
+bonafide,2400,16000,5.08,0.0821,255.3,33.6,0.124
+bonafide_vocoded,2400,16000,5.07,0.0822,254.6,33.4,0.1
+spoof_NSF,1200,16000,4.9,0.0834,275.5,37.5,0.113

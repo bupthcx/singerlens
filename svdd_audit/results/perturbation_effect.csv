@@ -1,0 +1,10 @@
+perturbation,n,mean_p_fake,median_p_fake,flip_rate_to_fake,delta_vs_original
+original,200,0.085,0.077,0.0,0.0
+resample_8k,200,0.455,0.497,0.465,0.37
+lowpass_4k,200,0.397,0.428,0.13,0.312
+lowpass_3k,200,0.45,0.492,0.465,0.365
+noise_20db,200,0.108,0.103,0.0,0.023
+noise_10db,200,0.062,0.06,0.0,-0.023
+gain_quiet,200,0.1,0.083,0.0,0.014
+mp3_32k,200,0.363,0.343,0.25,0.278
+reverb,200,0.232,0.223,0.045,0.147

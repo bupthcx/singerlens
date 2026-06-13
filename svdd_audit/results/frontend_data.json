@@ -1,0 +1,497 @@
+{
+  "tab1_problem": {
+    "contrast": [
+      {
+        "detector": "AASIST",
+        "in_domain_auc": 0.987,
+        "cross_auc": 0.596
+      },
+      {
+        "detector": "Random Forest",
+        "in_domain_auc": 0.899,
+        "cross_auc": 0.615
+      },
+      {
+        "detector": "wav2vec2 (SSL)",
+        "in_domain_auc": 0.912,
+        "cross_auc": 0.417
+      },
+      {
+        "detector": "wav2vec2-large",
+        "in_domain_auc": 0.97,
+        "cross_auc": 0.426
+      }
+    ],
+    "headline": {
+      "in_domain": "0.90-0.99",
+      "cross_dataset": "0.34-0.62"
+    },
+    "score_distribution": {
+      "within_domain": {
+        "protocol": "SingerLens_within",
+        "real": {
+          "x": [
+            0.021,
+            0.062,
+            0.104,
+            0.146,
+            0.188,
+            0.229,
+            0.271,
+            0.312,
+            0.354,
+            0.396,
+            0.438,
+            0.479,
+            0.521,
+            0.562,
+            0.604,
+            0.646,
+            0.688,
+            0.729,
+            0.771,
+            0.812,
+            0.854,
+            0.896,
+            0.938,
+            0.979
+          ],
+          "y": [
+            0.957,
+            1.13,
+            2.217,
+            2.0,
+            2.739,
+            3.087,
+            2.435,
+            2.0,
+            2.087,
+            1.478,
+            1.391,
+            0.87,
+            0.783,
+            0.391,
+            0.261,
+            0.087,
+            0.087,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "fake": {
+          "x": [
+            0.021,
+            0.062,
+            0.104,
+            0.146,
+            0.188,
+            0.229,
+            0.271,
+            0.312,
+            0.354,
+            0.396,
+            0.438,
+            0.479,
+            0.521,
+            0.562,
+            0.604,
+            0.646,
+            0.688,
+            0.729,
+            0.771,
+            0.812,
+            0.854,
+            0.896,
+            0.938,
+            0.979
+          ],
+          "y": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.09,
+            0.09,
+            0.18,
+            0.09,
+            0.27,
+            0.315,
+            0.405,
+            0.63,
+            0.765,
+            1.081,
+            2.386,
+            2.251,
+            2.837,
+            3.512,
+            3.557,
+            2.612,
+            1.981,
+            0.856,
+            0.09
+          ]
+        }
+      },
+      "cross_dataset": {
+        "protocol": "CtrSVDD->Wild_all",
+        "real": {
+          "x": [
+            0.021,
+            0.062,
+            0.104,
+            0.146,
+            0.188,
+            0.229,
+            0.271,
+            0.312,
+            0.354,
+            0.396,
+            0.438,
+            0.479,
+            0.521,
+            0.562,
+            0.604,
+            0.646,
+            0.688,
+            0.729,
+            0.771,
+            0.812,
+            0.854,
+            0.896,
+            0.938,
+            0.979
+          ],
+          "y": [
+            0.0,
+            0.0,
+            0.0,
+            0.105,
+            0.105,
+            0.21,
+            0.0,
+            0.419,
+            0.314,
+            0.419,
+            1.048,
+            1.362,
+            1.991,
+            2.201,
+            2.41,
+            3.668,
+            2.515,
+            1.572,
+            2.934,
+            1.048,
+            0.943,
+            0.734,
+            0.0,
+            0.0
+          ]
+        },
+        "fake": {
+          "x": [
+            0.021,
+            0.062,
+            0.104,
+            0.146,
+            0.188,
+            0.229,
+            0.271,
+            0.312,
+            0.354,
+            0.396,
+            0.438,
+            0.479,
+            0.521,
+            0.562,
+            0.604,
+            0.646,
+            0.688,
+            0.729,
+            0.771,
+            0.812,
+            0.854,
+            0.896,
+            0.938,
+            0.979
+          ],
+          "y": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.101,
+            0.203,
+            0.81,
+            1.215,
+            2.228,
+            1.316,
+            1.519,
+            2.127,
+            1.924,
+            3.038,
+            2.734,
+            2.025,
+            2.633,
+            1.215,
+            0.709,
+            0.101,
+            0.101,
+            0.0
+          ]
+        }
+      }
+    }
+  },
+  "tab2_exploration": {
+    "factorial_FULL": [
+      {
+        "contrast": "voc-shift|para=SVS",
+        "train": "SVS×hifigan",
+        "test": "SVS×ddsp",
+        "in_dist_eer": 2.33,
+        "held_out_eer": 29.71,
+        "degradation": 12.8
+      },
+      {
+        "contrast": "voc-shift|para=SVS",
+        "train": "SVS×hifigan",
+        "test": "SVS×nsf-hifigan",
+        "in_dist_eer": 1.38,
+        "held_out_eer": 39.67,
+        "degradation": 28.8
+      },
+      {
+        "contrast": "para-shift|voc=nsf",
+        "train": "SVC×nsf-hifigan",
+        "test": "SVS×nsf-hifigan",
+        "in_dist_eer": 0.62,
+        "held_out_eer": 55.33,
+        "degradation": 89.2
+      },
+      {
+        "contrast": "para-shift|voc=nsf",
+        "train": "SVS×nsf-hifigan",
+        "test": "SVC×nsf-hifigan",
+        "in_dist_eer": 0.81,
+        "held_out_eer": 48.0,
+        "degradation": 59.3
+      }
+    ],
+    "aasist_paradigm": {
+      "in_dist_eer": 4.0,
+      "held_out_eer": 54.29,
+      "degradation": 13.6
+    }
+  },
+  "tab3_culprit": {
+    "bandwidth_sweep": [
+      {
+        "cutoff_hz": 16000,
+        "cutoff_khz": 16.0,
+        "mean_fake_score": 0.085,
+        "flip_rate": 0.0
+      },
+      {
+        "cutoff_hz": 7500,
+        "cutoff_khz": 7.5,
+        "mean_fake_score": 0.206,
+        "flip_rate": 0.025
+      },
+      {
+        "cutoff_hz": 6000,
+        "cutoff_khz": 6.0,
+        "mean_fake_score": 0.414,
+        "flip_rate": 0.325
+      },
+      {
+        "cutoff_hz": 5000,
+        "cutoff_khz": 5.0,
+        "mean_fake_score": 0.401,
+        "flip_rate": 0.27
+      },
+      {
+        "cutoff_hz": 4000,
+        "cutoff_khz": 4.0,
+        "mean_fake_score": 0.397,
+        "flip_rate": 0.13
+      },
+      {
+        "cutoff_hz": 3500,
+        "cutoff_khz": 3.5,
+        "mean_fake_score": 0.429,
+        "flip_rate": 0.305
+      },
+      {
+        "cutoff_hz": 3000,
+        "cutoff_khz": 3.0,
+        "mean_fake_score": 0.45,
+        "flip_rate": 0.465
+      },
+      {
+        "cutoff_hz": 2500,
+        "cutoff_khz": 2.5,
+        "mean_fake_score": 0.375,
+        "flip_rate": 0.14
+      },
+      {
+        "cutoff_hz": 2000,
+        "cutoff_khz": 2.0,
+        "mean_fake_score": 0.335,
+        "flip_rate": 0.05
+      }
+    ],
+    "critical_onset_khz": [
+      6,
+      7
+    ],
+    "danger_band_khz": [
+      3,
+      6
+    ],
+    "crosslang": [
+      {
+        "perturbation": "resample-8k",
+        "mandarin": 0.465,
+        "cantonese": 0.39,
+        "english": 0.5
+      },
+      {
+        "perturbation": "low-pass 4k",
+        "mandarin": 0.13,
+        "cantonese": 0.133,
+        "english": 0.154
+      },
+      {
+        "perturbation": "low-pass 3k",
+        "mandarin": 0.465,
+        "cantonese": 0.324,
+        "english": 0.423
+      },
+      {
+        "perturbation": "MP3-32k",
+        "mandarin": 0.25,
+        "cantonese": 0.0,
+        "english": 0.154
+      },
+      {
+        "perturbation": "noise 10dB",
+        "mandarin": 0.0,
+        "cantonese": 0.0,
+        "english": 0.0
+      }
+    ]
+  },
+  "tab4_fix": {
+    "msa_curve": [
+      {
+        "k": 10,
+        "auc": 0.633,
+        "std": 0.068
+      },
+      {
+        "k": 20,
+        "auc": 0.701,
+        "std": 0.061
+      },
+      {
+        "k": 30,
+        "auc": 0.769,
+        "std": 0.043
+      },
+      {
+        "k": 50,
+        "auc": 0.816,
+        "std": 0.032
+      },
+      {
+        "k": 75,
+        "auc": 0.839,
+        "std": 0.033
+      },
+      {
+        "k": 100,
+        "auc": 0.86,
+        "std": 0.029
+      },
+      {
+        "k": 150,
+        "auc": 0.894,
+        "std": 0.026
+      },
+      {
+        "k": 200,
+        "auc": 0.909,
+        "std": 0.026
+      },
+      {
+        "k": 240,
+        "auc": 0.919,
+        "std": 0.024
+      }
+    ],
+    "in_domain_bound": 0.925,
+    "best_unsupervised": 0.52,
+    "unsupervised": [
+      {
+        "method": "CORAL",
+        "auc": 0.474
+      },
+      {
+        "method": "subspace",
+        "auc": 0.517
+      },
+      {
+        "method": "DANN",
+        "auc": 0.442
+      },
+      {
+        "method": "calibration",
+        "auc": 0.485
+      },
+      {
+        "method": "emotion (semantic)",
+        "auc": 0.412
+      }
+    ],
+    "hnr_trajectory": {
+      "labels": [
+        "Source",
+        "k=50",
+        "k=100",
+        "Within-target"
+      ],
+      "HNR": [
+        0.055,
+        0.123,
+        0.132,
+        0.146
+      ],
+      "MFCC": [
+        0.642,
+        0.56,
+        0.556,
+        0.561
+      ]
+    }
+  },
+  "tab5_demo": {
+    "gradio_url": "http://10.122.193.120:7860",
+    "note": "real-time inference; needs SSH port-forward or server access",
+    "panels": [
+      "verdict",
+      "style-radar",
+      "anomaly-table",
+      "anomaly-timeline",
+      "emotion-consistency"
+    ]
+  }
+}

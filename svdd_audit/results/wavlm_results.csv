@@ -1,0 +1,11 @@
+protocol,EER,AUC
+CtrSVDD within,35.17,0.711
+SingerLens within,41.11,0.632
+WildSVDD within,50.31,0.581
+CtrSVDD->SingerLens,57.42,0.411
+SingerLens->CtrSVDD,53.17,0.448
+CtrSVDD->WildSVDD,50.9,0.499
+SingerLens->WildSVDD,49.1,0.569
+LOVO-hifigan,36.0,0.701
+LOVO-nsf-hifigan,40.83,0.622
+LOVO-ddsp,33.33,0.741

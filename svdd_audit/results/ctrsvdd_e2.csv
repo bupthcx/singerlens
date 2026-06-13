@@ -1,0 +1,4 @@
+comparison,n_pos,n_neg,FULL,CLEAN,HNR,VRI
+G1_bona_vs_spoofNSF,1200,2400,16.67,37.83,43.92,47.92
+G2_bonaVOC_vs_spoofNSF,1200,2400,4.81,33.92,40.83,45.67
+G3_bona_vs_bonaVOC,2400,2400,8.58,42.58,41.96,48.67

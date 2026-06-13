@@ -1,0 +1,34 @@
+# Python/cache
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Environments
+.venv/
+venv/
+env/
+.env
+
+# Large/generated experiment artifacts
+outputs/
+data/
+*.wav
+*.mp3
+*.flac
+*.m4a
+*.pt
+*.pth
+*.ckpt
+*.joblib
+*.pkl
+*.zip
+*.tar
+*.tar.gz
+
+# OS/editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

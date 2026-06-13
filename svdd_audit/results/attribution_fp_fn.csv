@@ -1,0 +1,13 @@
+setup,kind,file,true_group,pred_prob,hnr_mean,hnr_low_ratio,vri_score,f0_jitter,anomaly_dims
+real_vs_fake,FP,singer_c_tiankong_017.wav,real,0.877,12.93,0.267,0.167,0.0334,vibrato_depth_mean(z=+2.7); f0_jitter(z=+2.4); micro_variation(z=+2.4)
+real_vs_fake,FP,singer_a_kaishidongle_027.wav,real,0.84,12.59,0.288,0.208,0.0133,vibrato_rate_mean(z=+1.5); f0_std(z=+1.2); micro_variation(z=-0.7)
+real_vs_fake,FN,singer_c_juhao_029_fake.wav,fake,0.117,8.75,0.533,0.194,0.0129,hnr_mean(z=-1.2); long_note_stability(z=+1.1); hnr_low_ratio(z=+1.0)
+real_vs_fake,FN,singer_b_kaishidongle_021_fake.wav,fake,0.143,19.0,0.135,0.164,0.0257,vibrato_depth_mean(z=+1.8); vibrato_depth_std(z=+1.6); f0_jitter(z=+1.3)
+real_vs_realvoc,FP,singer_a_tiankong2_021.wav,real,0.827,11.2,0.369,0.234,0.0091,vibrato_rate_std(z=-1.3); vibrato_depth_mean(z=-1.2); micro_variation(z=-1.1)
+real_vs_realvoc,FP,singer_b_woyaodexingfu_021.wav,real,0.773,16.72,0.165,0.145,0.0484,f0_jitter(z=+4.6); vibrato_depth_mean(z=+4.3); micro_variation(z=+3.9)
+real_vs_realvoc,FN,singer_b_kaishidongle_003_voc.wav,real_vocoded,0.143,19.82,0.139,0.214,0.0161,vibrato_rate_mean(z=+2.1); periodicity_score(z=+1.8); hnr_std(z=+1.5)
+real_vs_realvoc,FN,singer_b_tianheihei_006_voc.wav,real_vocoded,0.17,18.86,0.174,0.248,0.0114,f0_range_semitones(z=-1.6); hnr_std(z=+1.3); vibrato_depth_std(z=-1.2)
+realvoc_vs_fake,FP,singer_a_kaishidongle_018_voc.wav,real_vocoded,0.853,14.69,0.217,0.228,0.0097,vibrato_depth_mean(z=-1.1); f0_jitter(z=-1.0); vibrato_depth_std(z=-0.9)
+realvoc_vs_fake,FP,singer_c_tiankong_016_voc.wav,real_vocoded,0.823,13.11,0.248,0.165,0.0445,vibrato_depth_mean(z=+4.2); f0_jitter(z=+4.0); micro_variation(z=+3.0)
+realvoc_vs_fake,FN,singer_c_juhao_017_fake.wav,fake,0.083,9.63,0.473,0.173,0.0182,vibrato_rate_std(z=+1.1); hnr_mean(z=-1.0); vri_score(z=-0.9)
+realvoc_vs_fake,FN,singer_c_juhao_029_fake.wav,fake,0.093,8.75,0.533,0.194,0.0129,hnr_mean(z=-1.2); long_note_stability(z=+1.1); hnr_low_ratio(z=+1.0)

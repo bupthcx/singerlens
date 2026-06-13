@@ -1,0 +1,19 @@
+# Core analysis
+numpy
+pandas
+scikit-learn
+scipy
+# Audio features
+librosa
+soundfile
+praat-parselmouth
+matplotlib
+# Neural / SSL / generation
+torch>=2.4
+torchaudio
+transformers
+modelscope
+# Optional (emotion consistency module / Seed-VC fake generation / Whisper ASR)
+funasr
+openai-whisper
+tqdm

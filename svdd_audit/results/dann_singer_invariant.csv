@@ -1,0 +1,7 @@
+test_on,plain_auc,dann_auc
+singer_a,0.615,0.61
+singer_b,0.669,0.65
+singer_c,0.822,0.821
+singer_d,0.701,0.694
+singer_e,0.824,0.824
+singer_f,0.668,0.685

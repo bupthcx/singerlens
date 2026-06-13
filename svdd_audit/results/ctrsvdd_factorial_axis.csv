@@ -1,0 +1,17 @@
+contrast,fixed,train,test,note,feature_set,eer_indist,eer_heldout,ratio
+voc-shift|para=SVS,paradigm=SVS,SVS×hifigan,SVS×ddsp,"held-out vocoder (ddsp), 范式同",FULL,2.33,29.71,12.75
+voc-shift|para=SVS,paradigm=SVS,SVS×hifigan,SVS×ddsp,"held-out vocoder (ddsp), 范式同",CLEAN,4.33,33.33,7.7
+voc-shift|para=SVS,paradigm=SVS,SVS×hifigan,SVS×ddsp,"held-out vocoder (ddsp), 范式同",HNR,9.71,50.33,5.18
+voc-shift|para=SVS,paradigm=SVS,SVS×hifigan,SVS×ddsp,"held-out vocoder (ddsp), 范式同",VRI,7.38,40.71,5.52
+voc-shift|para=SVS,paradigm=SVS,SVS×hifigan,SVS×nsf-hifigan,"held-out vocoder (nsf), 范式同",FULL,1.38,39.67,28.75
+voc-shift|para=SVS,paradigm=SVS,SVS×hifigan,SVS×nsf-hifigan,"held-out vocoder (nsf), 范式同",CLEAN,3.71,37.71,10.16
+voc-shift|para=SVS,paradigm=SVS,SVS×hifigan,SVS×nsf-hifigan,"held-out vocoder (nsf), 范式同",HNR,9.0,53.0,5.89
+voc-shift|para=SVS,paradigm=SVS,SVS×hifigan,SVS×nsf-hifigan,"held-out vocoder (nsf), 范式同",VRI,6.62,50.37,7.61
+para-shift|voc=nsf,vocoder=nsf,SVC×nsf-hifigan,SVS×nsf-hifigan,"held-out paradigm (SVS), 声码器同",FULL,0.62,55.33,89.24
+para-shift|voc=nsf,vocoder=nsf,SVC×nsf-hifigan,SVS×nsf-hifigan,"held-out paradigm (SVS), 声码器同",CLEAN,2.08,52.0,25.0
+para-shift|voc=nsf,vocoder=nsf,SVC×nsf-hifigan,SVS×nsf-hifigan,"held-out paradigm (SVS), 声码器同",HNR,10.33,50.37,4.88
+para-shift|voc=nsf,vocoder=nsf,SVC×nsf-hifigan,SVS×nsf-hifigan,"held-out paradigm (SVS), 声码器同",VRI,3.0,52.0,17.33
+para-shift|voc=nsf,vocoder=nsf,SVS×nsf-hifigan,SVC×nsf-hifigan,"held-out paradigm (SVC), 声码器同",FULL,0.81,48.0,59.26
+para-shift|voc=nsf,vocoder=nsf,SVS×nsf-hifigan,SVC×nsf-hifigan,"held-out paradigm (SVC), 声码器同",CLEAN,2.9,51.76,17.85
+para-shift|voc=nsf,vocoder=nsf,SVS×nsf-hifigan,SVC×nsf-hifigan,"held-out paradigm (SVC), 声码器同",HNR,10.43,51.43,4.93
+para-shift|voc=nsf,vocoder=nsf,SVS×nsf-hifigan,SVC×nsf-hifigan,"held-out paradigm (SVC), 声码器同",VRI,3.24,48.76,15.05

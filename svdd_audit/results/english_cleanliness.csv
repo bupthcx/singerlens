@@ -1,0 +1,8 @@
+perturbation,n,mean_fake_score,flip_rate,delta_vs_clean
+clean,26,0.2,0.0,0.0
+resample_8k,26,0.486,0.5,0.287
+lowpass_4k,26,0.405,0.154,0.205
+lowpass_3k,26,0.494,0.423,0.294
+mp3_32k,26,0.362,0.154,0.162
+noise_10db,26,0.052,0.0,-0.148
+reverb,26,0.212,0.0,0.013

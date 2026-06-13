@@ -1,0 +1,17 @@
+cell,n_test,feature_set,eer_indist,eer_heldout,ratio,auc_indist,auc_heldout
+SVC×nsf-hifigan,900,FULL,3.67,39.9,10.87,0.993,0.653
+SVC×nsf-hifigan,900,CLEAN,7.57,51.33,6.78,0.975,0.5
+SVC×nsf-hifigan,900,HNR,16.33,45.9,2.81,0.921,0.557
+SVC×nsf-hifigan,900,VRI,10.43,51.9,4.98,0.957,0.472
+SVS×ddsp,300,FULL,3.67,28.67,7.81,0.992,0.799
+SVS×ddsp,300,CLEAN,5.33,32.96,6.18,0.991,0.714
+SVS×ddsp,300,HNR,16.67,49.33,2.96,0.909,0.527
+SVS×ddsp,300,VRI,7.42,41.33,5.57,0.976,0.607
+SVS×hifigan,900,FULL,2.33,31.76,13.63,0.997,0.773
+SVS×hifigan,900,CLEAN,5.0,40.57,8.11,0.99,0.621
+SVS×hifigan,900,HNR,15.67,48.33,3.08,0.923,0.529
+SVS×hifigan,900,VRI,8.24,47.67,5.79,0.968,0.532
+SVS×nsf-hifigan,300,FULL,2.0,41.33,20.66,0.996,0.638
+SVS×nsf-hifigan,300,CLEAN,4.67,41.67,8.92,0.991,0.624
+SVS×nsf-hifigan,300,HNR,17.62,48.67,2.76,0.909,0.5
+SVS×nsf-hifigan,300,VRI,8.75,51.33,5.87,0.968,0.512

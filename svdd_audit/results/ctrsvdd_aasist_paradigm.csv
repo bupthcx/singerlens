@@ -1,0 +1,3 @@
+tag,EER,AUC,F1,n_test
+paraNSF,54.29,0.456,0.052,1050
+paraNSF__indist_SVC,4.0,0.994,0.951,1050
