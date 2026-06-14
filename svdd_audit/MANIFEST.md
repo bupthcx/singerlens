@@ -16,6 +16,7 @@
 | §5.4 T4 | 失败归因(score collapse + 轴) | score_reversal_diag.py, failure_taxonomy.py, axis_attribution.py | score_distribution_summary.csv, failure_{cases,group_stats}.csv, axis_attribution{,_family}.csv, axis_attribution.png | score_reversal, failure_taxonomy, domain_adaptation |
 | §5.4(因果) | production perturbation | production_perturbation{,_ext}.py, production_leakage_resynthesis.py | perturbation_effect.csv, production_leakage_resynthesis.csv | production_perturbation, production_leakage_resynthesis |
 | §5.5 T5(出口) | DA / confound / MSA | domain_adaptation_cross.py, confound_removal.py, fewshot_{calibration,reweighting}.py | domain_adaptation_cross.csv, confound_removal_cross.csv, bandwidth_stats.csv, fewshot_{calibration,reweighting}.csv | domain_adaptation, confound_removal, fewshot_reweighting, minimal_supervised_adaptation |
+| §5.5 T5(出口) | U-MSA 第二目标域复验 | umsa_fixedtest_second_target.py | d3_secondtarget_ctrsvdd_fixedtest.{csv,png} | active_msa_second_target |
 | §5.5(d 情感) | 情感语义捷径证伪 | wild_emotion_consistency.py | wild_emotion_{consistency,auc}.csv | emotion_consistency_crossdomain |
 | §5.6 | 部署(弃权/few-shot/扰动) | reject_option.py, fewshot_calibration.py | reject_option_riskcoverage.{csv,png}, fewshot_calibration.{csv,png} | deployment_analysis |
 
