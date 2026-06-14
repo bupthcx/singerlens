@@ -290,8 +290,11 @@ p > strong:first-child { }
 <p><img alt="数据集组成" src="report_figures/fig_dataset_overview.png"></p>
 <h3>7.2 Demo 与交互式解释</h3>
 <p>Gradio Demo 支持上传或选择歌声音频,输出真假概率、置信度、特征异常和可视化解释。它的价值不只是展示一个检测结果,而是能把报告中的核心现象变成可观察过程:同一段真唱经过低通或压缩后,伪造分数会发生明显变化。</p>
-<p><strong>图 16. SingerLens Demo。</strong> 系统展示检测分数、置信度和解释面板。</p>
-<p><img alt="Gradio 演示界面" src="report_figures/demo_screenshot.png"></p>
+<p><strong>图 16. SingerLens Demo 真实运行对照。</strong> 取同一首歌(单依纯《DearFriend》)的<strong>同一段</strong>真唱与其 AI 翻唱跑通实际界面,二者歌词相同(Whisper 识别为“我唱着一首歌在想你忽然闪现眼神迷离”),仅真伪不同,构成公平对照。上图为真唱,系统判为“倾向真实演唱”(真实性评分 87.7/100,AI 翻唱概率 12.3%),风格画像贴近真人均值、异常时间轴全程低位;下图为 AI 翻唱,系统判为“疑似 AI 翻唱”(AI 翻唱概率 95.3%),画像偏向 AI 均值、时间轴全程高位。两图均完整展示检测分数、置信度、风格画像雷达、逐维异常表与情感一致性面板;尤其在情感面板上,真唱演唱情感为 other/sad(valence −0.36),而 AI 翻唱被唱成极端 sad(valence −1.00),与第 5.4 节“AI 难复制情感微表达”的观察一致。</p>
+<p><em>（a）真唱片段 → 倾向真实演唱(真实性 87.7/100)</em></p>
+<p><img alt="Demo 真唱判别" src="report_figures/fig_demo_real.png"></p>
+<p><em>（b）AI 翻唱片段 → 疑似 AI 翻唱(AI 概率 95.3%)</em></p>
+<p><img alt="Demo AI 翻唱判别" src="report_figures/fig_demo_fake.png"></p>
 <p>Demo 因此不是独立于论文的工程附属品,而是论点的交互式呈现。它帮助观众看到:检测器并非稳定地理解“AI 歌声”,而是在具体制作条件变化时发生判断漂移。</p>
 <h3>7.3 审计工具包</h3>
 <p>我们同时整理了 SVDD-Audit 工具链,覆盖跨数据集评估、copy-synthesis、LOVO/LOGO、因子化实验、特征归因、带宽扰动、MSA 和 U-MSA。它让队友可以继续扩展目标域、复现实验或加入新的生成系统。</p>
