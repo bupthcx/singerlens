@@ -1,0 +1,10 @@
+unit,path,duration_sec,fake_probability
+full_mixed_source,data/external_cases/bv13z4y1b7pl/source.wav,405.07,0.18333333333333332
+full_demucs_vocals,data/external_cases/bv13z4y1b7pl/separated/htdemucs/source/vocals.wav,405.07,0.15666666666666668
+vocals_30s_start_0,data/external_cases/bv13z4y1b7pl/long_windows/vocals_30s_000.wav,30.0,0.24333333333333335
+vocals_30s_start_60,data/external_cases/bv13z4y1b7pl/long_windows/vocals_30s_060.wav,30.0,0.13333333333333333
+vocals_30s_start_120,data/external_cases/bv13z4y1b7pl/long_windows/vocals_30s_120.wav,30.0,0.32666666666666666
+vocals_30s_start_180,data/external_cases/bv13z4y1b7pl/long_windows/vocals_30s_180.wav,30.0,0.18333333333333332
+vocals_30s_start_240,data/external_cases/bv13z4y1b7pl/long_windows/vocals_30s_240.wav,30.0,0.39666666666666667
+vocals_30s_start_300,data/external_cases/bv13z4y1b7pl/long_windows/vocals_30s_300.wav,30.0,0.11666666666666667
+vocals_30s_start_360,data/external_cases/bv13z4y1b7pl/long_windows/vocals_30s_360.wav,30.0,0.6766666666666666
